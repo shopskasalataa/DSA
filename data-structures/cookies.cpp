@@ -1,53 +1,50 @@
 #include <iostream>
-#include <list>
 #include <queue>
-#include <iterator>
 using namespace std;
-void delete_element(list<int>& l, int& n){
-    list<int>::iterator it;
-    for (it=l.begin(); it!=l.end(); it++){
-        if(*it == n){
-            break;
-        }
-    }
-    l.erase(it);
-}
-int mixing_cookies(list<int>& cookies, priority_queue<int, std::vector<int>, std::greater<int>>& least_sweet, const int& k){
+
+int mixing_cookies(priority_queue<int, std::vector<int>, std::greater<int>>& cookies, const int& k){
     int minimum_operations = 0;
     bool is_ready = false;
-    if(least_sweet.top() >= k){
+    if(cookies.top() >= k){
+        return 0;
+    }
+    if(cookies.empty()){
         return -1;
     }
+    int cookie1, cookie2;
     while(!is_ready){
-        int cookie1 = least_sweet.top();
-        least_sweet.pop();
-        int cookie2 = least_sweet.top();
-        least_sweet.pop();
+        if(!cookies.empty()){
+            cookie1 = cookies.top();
+            cookies.pop();
+        }else return -1;
+        if(!cookies.empty()){
+            cookie2 = cookies.top();
+            cookies.pop();
+        }else return -1;
         int new_cookie = cookie1 + 2 * cookie2;
-        delete_element(cookies, cookie1);
-        delete_element(cookies, cookie2);
-        cookies.push_front(new_cookie);
-        least_sweet.push(new_cookie);
+        cookies.push(new_cookie);
         minimum_operations++;
-        if(least_sweet.top() >= k){
+        if(cookies.top() >= k){
             is_ready = true;
         }
     }
     return minimum_operations;
 }
+
 int main(){
     int n, k;
-    list<int>cookies_sweetness;
-    priority_queue<int, std::vector<int>, std::greater<int>>least_sweet;
+    priority_queue<int, std::vector<int>, std::greater<int>>cookies_sweetness;
 
     cin >> n >> k;
     for(int i = 0; i < n; i++){
         int x;
         cin >> x;
-        cookies_sweetness.push_back(x);
-        least_sweet.push(x);
+        cookies_sweetness.push(x);
     }
     
-    cout << mixing_cookies(cookies_sweetness, least_sweet, k);
+    cout << mixing_cookies(cookies_sweetness, k);
     return 0;
 }
+
+// Jesse and Cookies
+// https://www.hackerrank.com/challenges/jesse-and-cookies/problem

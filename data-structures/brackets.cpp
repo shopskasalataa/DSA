@@ -2,40 +2,20 @@
 #include <string>
 #include <stack>
 using namespace std;
-bool valid(string brackets){
-    for (int i = 0; i < brackets.length(); i++){
-        if (brackets[i] != '{' && brackets[i] != '}' && 
-            brackets[i] != '[' && brackets[i] != ']' &&
-            brackets[i] != '(' && brackets[i] != ')'){
-            return false;
-        }
-    }
-    return true;
-}
 
 bool closed(string brackets){
-    if (!valid(brackets)){
-        return false;
-    }
-    
     stack<char> left;
-
     for (int i = 0; i < brackets.length(); i++){
-        if (brackets[i] == '(' || brackets[i] == '{' || brackets[i] == '['){
+       if(brackets[i] == '(' || brackets[i] == '{' || brackets[i] == '[')
             left.push(brackets[i]);
-            continue;
-        }
-        if ((brackets[i] == '}' && left.top() != '{') ||
-            (brackets[i] == ']' && left.top() != '[') ||
-            (brackets[i] == ')' && left.top() != '(')){
-            return false;
-        }
-        if (left.empty()){
-            return false;
-        }
-        left.pop();
+        else if(left.empty()) return false;
+            else if ((brackets[i] == ')' && left.top() == '(') || 
+                    (brackets[i] == '}' && left.top() == '{') || 
+                    (brackets[i] == ']' && left.top() == '[')) 
+                        left.pop();
+                    else return false;
     }
-    return left.empty();
+    if(!left.empty()) return false;
 }
 int main(){
     int n;
@@ -47,3 +27,6 @@ int main(){
     }
     return 0;
 }
+
+// Balanced brackets
+// https://www.hackerrank.com/challenges/balanced-brackets/problem

@@ -7,19 +7,25 @@ void throwing_cards(const int &n){
     for(int i = 1; i <= n; i++){
             deck.push(i);
         }
-        cout << "Discarded cards: ";
+        cout << "Discarded cards:";
+        bool first_output = true;
         while(!deck.empty()){
             int next = deck.front();
             deck.pop();
             deck.push(deck.front());
             deck.pop();
-            
+
             if(deck.empty()){
-                cout << endl << "Remaining card: ";
+                cout << endl << "Remaining card:";
+                first_output = true;
+                cout << (first_output ? " " : ", ") << next << endl;
+                break;
             }
-            cout << next << (deck.empty() ? "" : ", ");
+
+            cout << (first_output ? " " : ", ") << next;
+
+            first_output = false;
         }
-        cout << endl;
 }
 int main(){
     int n;
@@ -36,3 +42,6 @@ int main(){
     }
     return 0;
 }
+
+// 10935 Throwing Cards Away
+// https://onlinejudge.org/external/109/10935.pdf
